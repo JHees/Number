@@ -5,6 +5,7 @@
 #include <iostream>
 #include<vector>
 
+#include"num.h"
 using namespace std;
 
 //class chatoint
@@ -20,6 +21,13 @@ using namespace std;
 
 int main()
 {
-
+	while (1)
+	{
+		Number num1,num2;
+		cin >> num1>>num2;
+		Number num3(num1 + num2);
+		cout <<num3<<endl;
+	}
+	system("pause");
 }
 
