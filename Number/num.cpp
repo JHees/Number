@@ -75,8 +75,12 @@ ostream & operator<<(ostream& out, Number& num)
 Number Number::operator+(const Number& num)
 {
 	vector<char> ret;
-	vector<char>::size_type size_diff = ABS(number.size(), num.number.size());
-	Number num_big(number.size() - num.number.size() > 0 ? this : num), num_sma(number.size() - num.number.size() > 0 ? num : this);
+
+	vector<char>::size_type aline_this = 0, aline_num = 0;
+	for (; aline_this < this->number.size() && this->number[aline_this]!='.'; ++aline_this);
+	for (; aline_num < num.number.size() && num.number[aline_num]!='.'; ++aline_num);
+	vector<char>::size_type size_diff = ABS(aline_this, aline_num);
+	Number num_big(aline_this>=aline_num? this : num), num_sma(aline_this >= aline_num ? num : this);
 
 	vector<char>::size_type i = 0;
 	char buf = num_big.number[i] + ((i >= size_diff) ? num_sma.number[i - size_diff] : '0') - '0' - '0';
@@ -87,13 +91,27 @@ Number Number::operator+(const Number& num)
 	ret.push_back(buf % 10 + '0');
 	++i;
 
-	for (; i < number.size() || i < num.number.size(); ++i)
+	for (; i < (aline_this>aline_num ? aline_this : aline_num); ++i)
 	{
 		buf = num_big.number[i] + ((i >= size_diff) ? num_sma.number[i - size_diff] : '0') - '0' - '0';
 		if (buf > 9)
 			carry(ret);
 		ret.push_back(buf % 10 + '0');
 	}
+
+	if (aline_this != this->number.size() || aline_num != num.number.size())
+	{
+		ret.push_back('.');
+		++i;
+		for (; i < num_big.number.size() || i < num_sma.number.size(); ++i)
+		{
+			buf = num_big.number[i] + ((i <= num_sma.number.size()) ? num_sma.number[i - size_diff] : '0') - '0' - '0';
+			if (buf > 9)
+				carry(ret);
+			ret.push_back(buf % 10 + '0');
+		}
+	}
+	
 	if (ret.front() == '0')
 		ret.erase(ret.begin());
 	return Number(ret);
@@ -103,6 +121,8 @@ vector<char> Number::carry(vector<char>& vec)
 {
 	for (vector<char>::size_type i = vec.size()-1; i >= 0; --i)
 	{
+		if(vec[i]=='.')
+			continue;
 		if (vec.at(i) == '9')
 			vec[i] = '0';
 		else
