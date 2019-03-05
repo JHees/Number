@@ -21,13 +21,9 @@ using namespace std;
 
 int main()
 {
-	while (1)
-	{
-		Number num1,num2;
-		cin >> num1>>num2;
-		Number num3(num1 + num2);
-		cout <<num3<<endl;
-	}
+	Number num1("12.5E8");
+	cout <<num1<<endl;
+	cout << string(".").size() << endl;
 	system("pause");
 }
 

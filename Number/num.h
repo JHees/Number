@@ -3,17 +3,14 @@
 #include <iostream>
 #include<string>
 using namespace std;
+
 class Number
 {
 public:
 	vector<char> number;
-public:
 	vector<char> carry(vector<char>&);
-	//union 
-	//{
-	//	int INT;
-	//	Number NUMBER;
-	//}dom;
+	vector<char> decom(vector<char>&); //Decomposition subtraction
+	Number* dom=NULL;
 public:
 	friend istream& operator>>(istream&, Number&);
 	friend ostream& operator<<(ostream&, Number&);
@@ -22,7 +19,7 @@ public:
 	Number operator*(const Number&);
 	Number operator/(const Number&);
 
-	Number operator+(int);
+	//Number operator+(int);
 
 	//friend Number stringTonum(const string&);
 	Number();
